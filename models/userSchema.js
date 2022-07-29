@@ -18,7 +18,9 @@ const userSchema = new mongoose.Schema({
     },
     mobile: {
         type: Number,
+        trim: true,
         required: [true,'Please enter mobile number'],
+        
     },
     work: {
         type: String,

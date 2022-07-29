@@ -17,6 +17,9 @@ router.post("/register",async(req,res)=>{
     if(!name || !email || !age || !mobile || !work || !add || !desc){
         res.status(422).json("plz fill the data");
     }
+   else if(mobile.length<9){
+    res.status(422).json("Minimum mobile length must be 10");
+    }
     else{
 
         try {
@@ -25,7 +28,7 @@ router.post("/register",async(req,res)=>{
             console.log(preuser);
     
             if(preuser){
-                res.status(422).json("this is user is already present");
+                res.status(422).json("User already exists");
             }else{
                 const adduser = new users({
                     name,email,age,mobile,work,add,desc
@@ -76,19 +79,25 @@ router.get("/getuser/:id",async(req,res)=>{
 // update user data
 
 router.patch("/updateuser/:id",async(req,res)=>{
-    try {
-        const {id} = req.params;
-
-        const updateduser = await users.findByIdAndUpdate(id,req.body,{
-            new:true
-        });
-
-        console.log(updateduser);
-        res.status(201).json(updateduser);
-
-    } catch (error) {
-        res.status(422).json(error);
+    if((req.body.mobile).length<=9){
+        res.status(422).json("Minimum mobile length must be 10");
     }
+    else{
+        try {
+            const {id} = req.params;
+    
+            const updateduser = await users.findByIdAndUpdate(id,req.body,{
+                new:true
+            });
+    
+            console.log(updateduser);
+            res.status(201).json(updateduser);
+    
+        } catch (error) {
+            res.status(422).json(error);
+        }
+    }
+
 })
 
 
